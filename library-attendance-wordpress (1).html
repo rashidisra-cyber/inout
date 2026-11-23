@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ghulam Qadir Kazi Central Library Attendance</title>
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#14231c;--mute:#5d6f66;--line:#d6dfda;--in:#13795b;--out:#b4472f;--acc:#0f4c3a;--accink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--card:#17221c;--ink:#e6efe9;--mute:#93a69b;--line:#2a3a31;--in:#4fc79b;--out:#f08a72;--acc:#4fc79b;--accink:#0b1410;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1713;--card:#17221c;--ink:#e6efe9;--mute:#93a69b;--line:#2a3a31;--in:#4fc79b;--out:#f08a72;--acc:#4fc79b;--accink:#0b1410;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+main{max-width:900px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:0}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.clock{text-align:right;font-variant-numeric:tabular-nums}
+.clock b{font-size:2rem;display:block;line-height:1.1}
+.clock span{color:var(--mute);font-size:.9rem}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:inherit;color:var(--mute);cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--ink);border-color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:.9rem;color:var(--mute);margin-bottom:4px}
+input,select{width:100%;padding:11px 12px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.seg{display:flex;gap:8px;margin-bottom:14px}
+.seg button{flex:1;padding:10px;font:inherit;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.big button{padding:20px 10px;font:inherit;font-size:1.2rem;font-weight:700;border:0;border-radius:10px;color:#fff;cursor:pointer}
+.big .i{background:var(--in);color:var(--accink)}
+.big .o{background:var(--out);color:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .big .o{color:#2a0f08}}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.msg{margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);min-height:44px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.stat b{font-size:1.6rem;display:block}
+.stat span{color:var(--mute);font-size:.85rem}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mute);font-weight:600}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.8rem;border:1px solid var(--line)}
+.tag.in{color:var(--in);border-color:var(--in)}.tag.out{color:var(--out);border-color:var(--out)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:end}
+.bar>div{flex:1;min-width:140px}
+.btn{padding:10px 16px;font:inherit;border:1px solid var(--acc);background:var(--acc);color:var(--accink);border-radius:8px;cursor:pointer}
+.btn.g{background:none;color:var(--ink);border-color:var(--line)}
+.empty{color:var(--mute);padding:14px 0}
+[hidden]{display:none!important}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.idc{background:#fff;color:#000;border:1px solid #999;border-radius:8px;padding:10px;text-align:center;break-inside:avoid}
+.idc svg{max-width:100%;height:auto}
+@media print{body *{visibility:hidden}#cardsWrap,#cardsWrap *{visibility:visible}#cardsWrap{position:absolute;left:0;top:0;width:100%}}
+body{background:radial-gradient(1200px 500px at 50% -200px,rgba(15,76,58,.18),transparent),var(--bg)}
+main{max-width:960px;padding-top:16px}
+.top{background:linear-gradient(135deg,#0b3d2e,#14785a);color:#fff;padding:22px 24px;border-radius:18px;box-shadow:0 10px 30px rgba(11,61,46,.25);border-bottom:4px solid #d4a63a;margin-bottom:20px;align-items:center}
+.top h1{font:700 1.7rem/1.25 Georgia,"Times New Roman",serif;color:#fff}
+.top h1::before{content:"📚 "}
+.top div[style]{color:#cfe9df!important}
+.top .clock b{color:#f3d58a}
+.top .clock span{color:#cfe9df}
+nav{border:1px solid var(--line);gap:6px;background:var(--card);padding:6px;border-radius:14px}
+nav button{flex:1;border:0;border-radius:10px;padding:10px 14px}
+nav button.on{background:var(--acc);color:var(--accink);border:0}
+.card{border-radius:16px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+input,select{border-radius:10px;border:1.5px solid var(--line)}
+input:focus,select:focus{border-color:var(--acc)}
+.seg button{border-radius:99px}
+.big button{border-radius:14px;padding:26px 10px;font-size:1.25rem;box-shadow:0 6px 14px rgba(0,0,0,.15)}
+.stat{border-radius:14px;border-top:4px solid var(--acc);box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.stat:nth-child(2){border-top-color:var(--in)}.stat:nth-child(3){border-top-color:#d4a63a}.stat:nth-child(4){border-top-color:var(--out)}
+th{background:var(--bg)}
+tr:hover td{background:rgba(15,76,58,.06)}
+.btn{border-radius:10px;font-weight:600}
+.msg{border-left:4px solid #d4a63a;border-radius:10px}
+.idc{border-top:4px solid #0f4c3a;border-radius:12px}
+.pies{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 12px}
+@media(max-width:560px){.pies{grid-template-columns:1fr}}
+.pc{border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;background:var(--bg)}
+.pc h3{margin:0 0 6px;font:700 1.05rem Georgia,serif}
+.pc svg{max-width:220px;width:100%;height:auto}
+.leg{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:.88rem;margin-top:6px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+<main>
+<div class="top">
+  <div><h1>Ghulam Qadir Kazi Central Library</h1><div style="color:var(--mute)">Isra University, Hyderabad · Student and staff entry, in and out</div><div id="store" style="color:var(--mute);font-size:.85rem">Saved on this device only</div></div>
+  <div class="clock"><b id="t">--:--:--</b><span id="d"></span></div>
+</div>
+<nav id="nav">
+  <button data-v="mark" class="on">Check in/out</button>
+  <button data-v="today">Today</button>
+  <button data-v="report">Reports</button>
+  <button data-v="people">People</button>
+</nav>
+
+<section id="mark">
+  <div class="card">
+    <label for="lib">Library (set this for the desk you are at)</label><select id="lib" style="margin-bottom:12px"></select>
+    <label style="display:flex;gap:8px;align-items:center;cursor:pointer;margin-bottom:12px"><input type="checkbox" id="snd" checked style="width:auto"> Speak the name aloud on entry and exit</label>
+    <label for="scan">Scan barcode: a USB scanner types the roll no and presses Enter</label>
+    <input id="scan" autocomplete="off" placeholder="Click here, then scan the student card">
+    <p><button class="btn g" id="cam">Scan with camera</button></p>
+    <video id="vid" playsinline muted hidden style="width:100%;max-width:420px;border-radius:8px"></video>
+    <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+    <div class="seg" id="seg"><button data-k="student" class="on">Student</button><button data-k="staff">Staff</button></div>
+    <div class="row">
+      <div><label for="who">Name</label><select id="who"></select></div>
+      <div><label for="idin">Or type ID</label><input id="idin" placeholder="Roll no, e.g. 2024-CS-101" autocomplete="off"></div>
+    </div>
+    <div class="big"><button class="i" id="bi">Check in</button><button class="o" id="bo">Check out</button></div>
+    <div class="msg" id="msg" role="status">Choose a name and tap Check in or Check out.</div>
+  </div>
+</section>
+
+<section id="today" hidden>
+  <div class="card"><label for="tlib">Show library</label><select id="tlib"></select></div>
+  <div class="stats" id="stats"></div>
+  <div class="card"><div class="wrap" id="todayTbl"></div></div>
+</section>
+
+<section id="report" hidden>
+  <div class="card">
+    <div class="bar">
+      <div><label for="f1">From</label><input type="date" id="f1"></div>
+      <div><label for="f2">To</label><input type="date" id="f2"></div>
+      <div><label for="ft">Group</label><select id="ft"><option value="">All</option><option value="student">Students</option><option value="staff">Staff</option></select></div>
+      <div><label for="fl">Library</label><select id="fl"></select></div><button class="btn" id="xl">Export Excel with pie charts</button><button class="btn g" id="csv">Export CSV</button>
+    </div>
+    <div class="pies"><div class="pc"><h3>Visits by group</h3><div id="pie1"></div></div><div class="pc"><h3>Entry vs exit</h3><div id="pie2"></div></div><div class="pc" style="grid-column:1/-1"><h3>Visits by library</h3><div id="pie3"></div></div></div>
+    <p><button class="btn g" id="pngbtn">Download chart image</button></p>
+    <div class="wrap" id="repTbl"></div>
+  </div>
+</section>
+
+<section id="people" hidden>
+  <div class="card">
+    <div class="row">
+      <div><label for="pn">Full name</label><input id="pn"></div>
+      <div><label for="pi">Roll no / ID</label><input id="pi" placeholder="e.g. 2024-CS-101"></div>
+      <div><label for="pt">Group</label><select id="pt"><option value="student">Student</option><option value="staff">Staff</option></select></div>
+      <div><label for="pc">Department / program</label><input id="pc" placeholder="e.g. BS Computer Science, Sem 3"></div>
+    </div>
+    <p><button class="btn" id="add">Add person</button></p>
+    <label for="bulk">Add many students at once: one per line as roll no, name, department</label>
+    <textarea id="bulk" rows="5" style="width:100%;padding:11px 12px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px" placeholder="2024-CS-101, Ayesha Khan, BS Computer Science"></textarea>
+    <p><button class="btn g" id="imp">Add students</button> <span id="impm" role="status"></span></p>
+    <div class="wrap" id="pTbl"></div>
+    <h2 style="font-size:1.1rem;margin:22px 0 6px">Student barcodes</h2>
+    <p style="color:var(--mute);margin:0 0 10px">Made automatically from each roll no. Print them for student cards.</p>
+    <p><button class="btn g" id="prt">Print barcodes</button></p>
+    <div id="cardsWrap"><div class="cards" id="cards"></div></div>
+  </div>
+</section>
+</main>
+
+<script>
+/* WordPress / standalone version: no claude.ai services. Data is kept in this browser (localStorage) and files download normally. */
+window.claude={use:function(n){
+ if(n!=="downloads")return Promise.resolve(null);
+ return Promise.resolve({save:function(o){
+  var b=o.data instanceof Blob?o.data:new Blob([o.data],{type:"text/csv"});
+  var u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=o.filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(u)},1500);return Promise.resolve({})}})}};
+
+(function(){
+var P=[],L=[],type="student";
+function load(){try{P=JSON.parse(localStorage.getItem("att_p")||"null")||[];L=JSON.parse(localStorage.getItem("att_l")||"null")||[]}catch(e){P=[];L=[]}
+ P=P.filter(function(p){return["S101","S102","S103","T201","T202"].indexOf(p.id)<0});}
+var DB=null;
+function key(id){return String(id).replace(/[^A-Za-z0-9_.~:@+-]/g,"_")}
+function dbPut(p){if(DB)DB.doc("people/"+key(p.id)).set(p).catch(function(){})}
+function dbDel(p){if(DB&&p)DB.doc("people/"+key(p.id)).delete().catch(function(){})}
+function dbLog(l){if(DB)DB.collection("logs").add(l).catch(function(){})}
+function refresh(){if(!$("today").hidden)renderToday();if(!$("report").hidden)renderRep();if(!$("people").hidden)renderP()}
+function save(){if(DB)return;try{localStorage.setItem("att_p",JSON.stringify(P));localStorage.setItem("att_l",JSON.stringify(L))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+function pad(n){return String(n).padStart(2,"0")}
+function dkey(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function tstr(ts){var d=new Date(ts);return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function tick(){var n=new Date();$("t").textContent=tstr(n);$("d").textContent=n.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"})}
+setInterval(tick,1000);tick();
+function today(pid,lib){var k=dkey(new Date());return L.filter(function(l){return l.p===pid&&l.d===k&&(!lib||l.lib===lib)}).sort(function(a,b){return a.ts-b.ts})}
+function fillWho(){var s=$("who");s.innerHTML=P.filter(function(p){return p.t===type}).map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.n)+" ("+esc(p.id)+")</option>"}).join("")||"<option value=''>No one added yet</option>"}
+function mark(kind){
+ var id=$("idin").value.trim().toUpperCase()||$("who").value,p=P.filter(function(x){return x.id.toUpperCase()===id.toUpperCase()})[0],m=$("msg");
+ if(!p){m.textContent="No person found with that ID. Check the ID or add them under People.";return}
+ var t=today(p.id,$("lib").value),last=t.length?t[t.length-1].k:null;
+ if(kind==="in"&&last==="in"){m.textContent=p.n+" is already checked in since "+tstr(t[t.length-1].ts)+".";return}
+ if(kind==="out"&&last!=="in"){m.textContent=p.n+" has not checked in yet. Check in first.";return}
+ var now=new Date(),rec={p:p.id,k:kind,ts:now.getTime(),d:dkey(now),lib:$("lib").value};L.push(rec);save();dbLog(rec);
+ m.textContent=(kind==="in"?"Checked in: ":"Checked out: ")+p.n+" at "+tstr(now.getTime())+" ("+$("lib").value+")";$("idin").value="";speak(kind,p.n);renderToday()}
+$("bi").onclick=function(){mark("in")};$("bo").onclick=function(){mark("out")};
+$("seg").onclick=function(e){var k=e.target.dataset.k;if(!k)return;type=k;[].forEach.call($("seg").children,function(b){b.classList.toggle("on",b.dataset.k===k)});fillWho()};
+$("nav").onclick=function(e){var v=e.target.dataset.v;if(!v)return;[].forEach.call($("nav").children,function(b){b.classList.toggle("on",b.dataset.v===v)});["mark","today","report","people"].forEach(function(s){$(s).hidden=s!==v});if(v==="mark")$("scan").focus();if(v==="today")renderToday();if(v==="report")renderRep();if(v==="people")renderP()};
+function renderToday(){
+ var rows=P.map(function(p){var t=today(p.id,$("tlib").value),ins=t.filter(function(x){return x.k==="in"}),outs=t.filter(function(x){return x.k==="out"}),last=t.length?t[t.length-1].k:null;
+  return{p:p,first:ins[0]?ins[0].ts:null,lastOut:outs.length?outs[outs.length-1].ts:null,st:last==="in"?"in":(last==="out"?"out":"none")}});
+ var pi=rows.filter(function(r){return r.st==="in"}).length,po=rows.filter(function(r){return r.st==="out"}).length,ab=rows.filter(function(r){return r.st==="none"}).length;
+ $("stats").innerHTML='<div class="stat"><b>'+rows.length+'</b><span>Total people</span></div><div class="stat"><b>'+pi+'</b><span>Checked in now</span></div><div class="stat"><b>'+po+'</b><span>Checked out</span></div><div class="stat"><b>'+ab+'</b><span>Not arrived</span></div>';
+ $("todayTbl").innerHTML=rows.length?'<table><tr><th>Name</th><th>Group</th><th>Class/Dept</th><th>In</th><th>Out</th><th>Status</th></tr>'+rows.map(function(r){return"<tr><td>"+esc(r.p.n)+"</td><td>"+r.p.t+"</td><td>"+esc(r.p.c||"")+"</td><td>"+(r.first?tstr(r.first):"–")+"</td><td>"+(r.lastOut?tstr(r.lastOut):"–")+'</td><td><span class="tag '+(r.st==="none"?"":r.st)+'">'+(r.st==="in"?"Present":r.st==="out"?"Left":"Absent")+"</span></td></tr>"}).join("")+"</table>":'<div class="empty">No people yet.</div>'}
+function repRows(){
+ var a=$("f1").value,b=$("f2").value,g=$("ft").value,fl=$("fl").value;
+ return L.filter(function(l){return(!a||l.d>=a)&&(!b||l.d<=b)&&(!fl||l.lib===fl)}).map(function(l){var p=P.filter(function(x){return x.id===l.p})[0];return p?{d:l.d,time:tstr(l.ts),k:l.k,p:p,ts:l.ts,lib:l.lib||"Not set"}:null}).filter(function(r){return r&&(!g||r.p.t===g)}).sort(function(a,b){return b.ts-a.ts})}
+function renderRep(){var r=repRows();renderPies(r);$("repTbl").innerHTML=r.length?'<table><tr><th>Date</th><th>Time</th><th>Name</th><th>ID</th><th>Group</th><th>Library</th><th>Action</th></tr>'+r.map(function(x){return"<tr><td>"+x.d+"</td><td>"+x.time+"</td><td>"+esc(x.p.n)+"</td><td>"+esc(x.p.id)+"</td><td>"+x.p.t+'</td><td>'+esc(x.lib)+'</td><td><span class="tag '+x.k+'">'+(x.k==="in"?"In":"Out")+"</span></td></tr>"}).join("")+"</table>":'<div class="empty">No records for this filter. Check someone in to start the log.</div>'}
+["f1","f2","ft"].forEach(function(i){$(i).onchange=renderRep});
+$("csv").onclick=function(){var r=repRows(),c=["Date,Time,Name,ID,Group,Class/Dept,Library,Action"].concat(r.map(function(x){return[x.d,x.time,'"'+x.p.n.replace(/"/g,'""')+'"',x.p.id,x.p.t,'"'+(x.p.c||"").replace(/"/g,'""')+'"','"'+x.lib+'"',x.k].join(",")})).join("\n");
+ if(!r.length){alert("No records to export for this filter.");return}
+ var fn="attendance_"+($("f1").value||"all")+"_to_"+($("f2").value||"all")+".csv";
+ claude.use("downloads").then(function(dl){if(!dl){alert("Download is not available here. Open the link in its own browser tab.");return}return dl.save({filename:fn,data:"\ufeff"+c})}).catch(function(e){if(!e||e.code!=="declined")alert("Could not save the file. Try again.")})};
+function renderP(){renderCards();$("pTbl").innerHTML='<table><tr><th>Name</th><th>ID</th><th>Group</th><th>Class/Dept</th><th></th></tr>'+P.map(function(p,i){return"<tr><td>"+esc(p.n)+"</td><td>"+esc(p.id)+"</td><td>"+p.t+"</td><td>"+esc(p.c||"")+'</td><td><button class="btn g" data-r="'+i+'">Remove</button></td></tr>'}).join("")+"</table>"}
+$("pTbl").onclick=function(e){var i=e.target.dataset.r;if(i==null)return;dbDel(P.splice(+i,1)[0]);save();renderP();fillWho()};
+$("add").onclick=function(){var n=$("pn").value.trim(),id=$("pi").value.trim();if(!n||!id)return alert("Enter a name and an ID.");
+ if(P.some(function(p){return p.id.toUpperCase()===id.toUpperCase()}))return alert("That ID is already used.");
+ P.push({id:id,n:n,t:$("pt").value,c:$("pc").value.trim()});save();dbPut(P[P.length-1]);["pn","pi","pc"].forEach(function(i){$(i).value=""});renderP();fillWho()};
+$("imp").onclick=function(){var n=0;$("bulk").value.split("\n").forEach(function(line){var a=line.split(",").map(function(s){return s.trim()});if(a.length<2||!a[0]||!a[1])return;if(P.some(function(p){return p.id.toUpperCase()===a[0].toUpperCase()}))return;var np={id:a[0],n:a[1],t:"student",c:a[2]||""};P.push(np);dbPut(np);n++});save();$("bulk").value="";renderP();fillWho();$("impm").textContent=n+" students added."};
+function auto(code){code=String(code).trim();if(!code)return;var p=P.filter(function(x){return x.id.toUpperCase()===code.toUpperCase()})[0];if(!p){$("msg").textContent="No person found with roll no "+code+". Add them under People.";return}
+ var t=today(p.id,$("lib").value),last=t.length?t[t.length-1].k:null;$("idin").value=p.id;mark(last==="in"?"out":"in")}
+$("scan").addEventListener("keydown",function(e){if(e.key=="Enter"){e.preventDefault();auto(this.value);this.value="";this.focus()}});
+var stream=null,timer=null;
+function stopCam(){clearInterval(timer);if(stream)stream.getTracks().forEach(function(t){t.stop()});stream=null;$("vid").hidden=true;$("cam").textContent="Scan with camera"}
+$("cam").onclick=async function(){
+ if(stream){stopCam();return}
+ if(!("BarcodeDetector" in window)||!navigator.mediaDevices){$("msg").textContent="Camera scanning is not supported in this browser. Use a USB scanner or type the roll no.";return}
+ try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});var v=$("vid");v.srcObject=stream;v.hidden=false;await v.play();$("cam").textContent="Stop camera";
+  var det=new BarcodeDetector(),last="",lt=0;
+  timer=setInterval(async function(){try{var r=await det.detect(v);if(r.length){var c=r[0].rawValue,n=Date.now();if(c!==last||n-lt>4000){last=c;lt=n;auto(c)}}}catch(e){}},400)
+ }catch(e){stopCam();$("msg").textContent="Camera is blocked. Allow camera access or use a USB scanner."}};
+function renderCards(){var box=$("cards"),st=P.filter(function(p){return p.t==="student"});
+ box.innerHTML=st.length?st.map(function(p){return'<div class="idc"><b>Ghulam Qadir Kazi Central Library</b><div style="font-size:.8rem">Isra University, Hyderabad</div><div>'+esc(p.n)+'</div><small>'+esc(p.c||"")+'</small><svg class="bc" data-id="'+esc(p.id)+'"></svg></div>'}).join(""):'<div class="empty">Add students to see their barcodes.</div>';
+ if(!window.JsBarcode){if(st.length)box.insertAdjacentHTML("afterbegin",'<div class="empty">Barcode maker could not load. Check your internet connection.</div>');return}
+ [].forEach.call(box.querySelectorAll("svg.bc"),function(s){try{JsBarcode(s,s.dataset.id,{format:"CODE128",height:50,width:2,fontSize:14,margin:4,background:"#ffffff",lineColor:"#000000"})}catch(e){}})}
+$("prt").onclick=function(){window.print()};
+function items2(r){var s=r.filter(function(x){return x.p.t==="student"}).length,t=r.filter(function(x){return x.p.t==="staff"}).length,i=r.filter(function(x){return x.k==="in"}).length;
+ return[[{l:"Students",v:s,c:"#14785a"},{l:"Staff",v:t,c:"#d4a63a"}],[{l:"Entry",v:i,c:"#14785a"},{l:"Exit",v:r.length-i,c:"#b0542f"}]]}
+function legTxt(it){var tot=it.reduce(function(a,x){return a+x.v},0);return it.map(function(x){return x.l+" "+x.v+(tot?" ("+Math.round(x.v*100/tot)+"%)":"")})}
+function pieInner(items,ink){var tot=items.reduce(function(a,x){return a+x.v},0),R=86,r=52,cx=100,cy=100,a0=-Math.PI/2,s="";
+ if(!tot)s+='<circle cx="100" cy="100" r="69" fill="none" stroke="#d6dfda" stroke-width="34"/>';
+ else items.forEach(function(x){if(!x.v)return;var f=x.v/tot;if(f>=.9999){s+='<circle cx="100" cy="100" r="69" fill="none" stroke="'+x.c+'" stroke-width="34"/>';return}
+  var a1=a0+f*2*Math.PI,lg=f>.5?1:0;
+  s+='<path d="M'+(cx+R*Math.cos(a0))+' '+(cy+R*Math.sin(a0))+' A'+R+' '+R+' 0 '+lg+' 1 '+(cx+R*Math.cos(a1))+' '+(cy+R*Math.sin(a1))+' L'+(cx+r*Math.cos(a1))+' '+(cy+r*Math.sin(a1))+' A'+r+' '+r+' 0 '+lg+' 0 '+(cx+r*Math.cos(a0))+' '+(cy+r*Math.sin(a0))+' Z" fill="'+x.c+'" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>';a0=a1});
+ s+='<text x="100" y="108" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" style="fill:'+ink+'">'+tot+'</text><text x="100" y="126" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" style="fill:'+ink+'">records</text>';return s}
+function pieHtml(items){var t=legTxt(items);return'<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'+pieInner(items,"var(--ink)")+'</svg><div class="leg">'+items.map(function(x,i){return'<span><i style="background:'+x.c+'"></i>'+t[i]+'</span>'}).join("")+'</div>'}
+function renderPies(r){$("pie3").innerHTML=pieHtml(items3(r));var p=items2(r);$("pie1").innerHTML=pieHtml(p[0]);$("pie2").innerHTML=pieHtml(p[1])}
+$("pngbtn").onclick=function(){var r=repRows(),p=items2(r),rng=($("f1").value||"all")+" to "+($("f2").value||"all");
+ var s='<svg xmlns="http://www.w3.org/2000/svg" width="900" height="570" viewBox="0 0 900 570"><rect width="900" height="570" fill="#ffffff"/><rect width="900" height="88" fill="#0f4c3a"/><rect y="88" width="900" height="6" fill="#d4a63a"/><text x="450" y="40" text-anchor="middle" font-family="Georgia,serif" font-size="28" font-weight="700" fill="#ffffff">Ghulam Qadir Kazi Central Library</text><text x="450" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#f3d58a">Isra University, Hyderabad \u00b7 Attendance report "+rng+"</text>'.replace('"+rng+"',rng);
+ [0,1].forEach(function(k){var x=k?495:45;
+  s+='<text x="'+(x+180)+'" y="132" text-anchor="middle" font-family="Georgia,serif" font-size="23" font-weight="700" fill="#14231c">'+(k?"Entry vs exit":"Visits by group")+'</text><g transform="translate('+x+',148) scale(1.8)">'+pieInner(p[k],"#14231c")+'</g>';
+  var t=legTxt(p[k]);p[k].forEach(function(it,i){var lx=x+20+i*170;s+='<circle cx="'+lx+'" cy="535" r="8" fill="'+it.c+'"/><text x="'+(lx+16)+'" y="541" font-family="Arial,sans-serif" font-size="17" fill="#14231c">'+t[i]+'</text>'})});
+ s+='</svg>';
+ var img=new Image();
+ img.onload=function(){var c=document.createElement("canvas");c.width=1800;c.height=1140;c.getContext("2d").drawImage(img,0,0,1800,1140);
+  c.toBlob(function(b){claude.use("downloads").then(function(dl){if(!dl){alert("Download is not available here. Open the link in its own browser tab.");return}return dl.save({filename:"attendance_chart_"+rng.replace(/ /g,"")+".png",data:b})}).catch(function(e){if(!e||e.code!=="declined")alert("Could not save the image. Try again.")})},"image/png")};
+ img.onerror=function(){alert("Could not make the chart image.")};
+ img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s)};
+
+function xesc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function xc(ref,v,s){var st=s?' s="'+s+'"':"";return typeof v==="number"?'<c r="'+ref+'"'+st+'><v>'+v+'</v></c>':'<c r="'+ref+'"'+st+' t="inlineStr"><is><t>'+xesc(v)+'</t></is></c>'}
+function xrow(n,arr,s){return'<row r="'+n+'">'+arr.map(function(v,i){return xc(String.fromCharCode(65+i)+n,v,s)}).join("")+"</row>"}
+var XH='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+var NSC='xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+function pieXml(title,catRef,valRef,names,vals,cols){
+ var pts=function(a,num){return a.map(function(x,i){return'<c:pt idx="'+i+'"><c:v>'+(num?x:xesc(x))+'</c:v></c:pt>'}).join("")};
+ var dpt=cols.map(function(c,i){return'<c:dPt><c:idx val="'+i+'"/><c:bubble3D val="0"/><c:spPr><a:solidFill><a:srgbClr val="'+c+'"/></a:solidFill><a:ln w="25400"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:ln></c:spPr></c:dPt>'}).join("");
+ return XH+'<c:chartSpace '+NSC+'><c:roundedCorners val="1"/><c:chart><c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="1500" b="1"/></a:pPr><a:r><a:rPr lang="en-US" sz="1500" b="1"><a:solidFill><a:srgbClr val="0F4C3A"/></a:solidFill></a:rPr><a:t>'+xesc(title)+'</a:t></a:r></a:p></c:rich></c:tx><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/><c:pieChart><c:varyColors val="1"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>Records</c:v></c:tx>'+dpt+
+ '<c:dLbls><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln></c:spPr><c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="1200" b="1"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:defRPr></a:pPr><a:endParaRPr lang="en-US"/></a:p></c:txPr><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="1"/><c:showBubbleSize val="0"/><c:showLeaderLines val="0"/></c:dLbls>'+
+ '<c:cat><c:strRef><c:f>'+catRef+'</c:f><c:strCache><c:ptCount val="'+names.length+'"/>'+pts(names,false)+'</c:strCache></c:strRef></c:cat><c:val><c:numRef><c:f>'+valRef+'</c:f><c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="'+vals.length+'"/>'+pts(vals,true)+'</c:numCache></c:numRef></c:val></c:ser><c:firstSliceAng val="0"/></c:pieChart></c:plotArea><c:legend><c:legendPos val="b"/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/></c:chart><c:spPr><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln w="19050"><a:solidFill><a:srgbClr val="D4A63A"/></a:solidFill></a:ln></c:spPr></c:chartSpace>'}
+function anchor(id,rid,r0,r1){return'<xdr:twoCellAnchor><xdr:from><xdr:col>0</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>'+r0+'</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:to><xdr:col>5</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>'+r1+'</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to><xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="'+id+'" name="Chart '+id+'"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/></xdr:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="'+rid+'"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor>'}
+$("xl").onclick=function(){
+ var r=repRows();if(!r.length){alert("No records to export for this filter.");return}
+ if(!window.JSZip){alert("Excel maker could not load. Check your internet connection.");return}
+ var lv=libVals(r),sr=sumRows(items2(r),lv),p=items2(r),rng=($("f1").value||"all")+" to "+($("f2").value||"all");
+ var NS='xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+ var RT="http://schemas.openxmlformats.org/officeDocument/2006/relationships/";
+ var sum=XH+'<worksheet '+NS+'><cols><col min="1" max="1" width="22" customWidth="1"/><col min="2" max="2" width="12" customWidth="1"/><col min="3" max="3" width="4" customWidth="1"/><col min="4" max="4" width="16" customWidth="1"/><col min="5" max="5" width="12" customWidth="1"/><col min="7" max="7" width="34" customWidth="1"/><col min="8" max="8" width="10" customWidth="1"/></cols><sheetData>'+
+  xrow(1,["Ghulam Qadir Kazi Central Library"],2)+xrow(2,["Isra University, Hyderabad - attendance report "+rng])+
+  sr+'</sheetData><drawing r:id="rId1"/></worksheet>';
+ var hdr=["Date","Time","Name","Roll no","Group","Class or department","Library","Action"];
+ var rec=XH+'<worksheet '+NS+'><cols><col min="1" max="2" width="12" customWidth="1"/><col min="3" max="3" width="28" customWidth="1"/><col min="4" max="5" width="16" customWidth="1"/><col min="6" max="6" width="30" customWidth="1"/><col min="7" max="7" width="32" customWidth="1"/><col min="8" max="8" width="10" customWidth="1"/></cols><sheetData>'+xrow(1,hdr,1)+
+  r.map(function(x,i){return xrow(i+2,[x.d,x.time,x.p.n,x.p.id,x.p.t,x.p.c||"",x.lib,x.k==="in"?"Entry":"Exit"])}).join("")+'</sheetData><autoFilter ref="A1:H'+(r.length+1)+'"/></worksheet>';
+ var styles=XH+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="16"/><color rgb="FF0F4C3A"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0F4C3A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs></styleSheet>';
+ var rels=function(a){return XH+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+a.map(function(x,i){return'<Relationship Id="rId'+(i+1)+'" Type="'+RT+x[0]+'" Target="'+x[1]+'"/>'}).join("")+'</Relationships>'};
+ var ct=XH+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/><Override PartName="/xl/charts/chart1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/><Override PartName="/xl/charts/chart2.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/><Override PartName="/xl/charts/chart3.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/></Types>';
+ var z=new JSZip();
+ z.file("[Content_Types].xml",ct);
+ z.file("_rels/.rels",rels([["officeDocument","xl/workbook.xml"]]));
+ z.file("xl/workbook.xml",XH+'<workbook '+NS+'><sheets><sheet name="Summary" sheetId="1" r:id="rId1"/><sheet name="Records" sheetId="2" r:id="rId2"/></sheets></workbook>');
+ z.file("xl/_rels/workbook.xml.rels",rels([["worksheet","worksheets/sheet1.xml"],["worksheet","worksheets/sheet2.xml"],["styles","styles.xml"]]));
+ z.file("xl/styles.xml",styles);
+ z.file("xl/worksheets/sheet1.xml",sum);
+ z.file("xl/worksheets/sheet2.xml",rec);
+ z.file("xl/worksheets/_rels/sheet1.xml.rels",rels([["drawing","../drawings/drawing1.xml"]]));
+ z.file("xl/drawings/drawing1.xml",XH+'<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'+anchor(2,"rId1",7,26)+anchor(3,"rId2",27,46)+anchor(4,"rId3",47,66)+'</xdr:wsDr>');
+ z.file("xl/drawings/_rels/drawing1.xml.rels",rels([["chart","../charts/chart1.xml"],["chart","../charts/chart2.xml"],["chart","../charts/chart3.xml"]]));
+ z.file("xl/charts/chart1.xml",pieXml("Visits by group","Summary!$A$5:$A$6","Summary!$B$5:$B$6",[p[0][0].l,p[0][1].l],[p[0][0].v,p[0][1].v],["14785A","D4A63A"]));
+ z.file("xl/charts/chart2.xml",pieXml("Entry vs exit","Summary!$D$5:$D$6","Summary!$E$5:$E$6",[p[1][0].l,p[1][1].l],[p[1][0].v,p[1][1].v],["14785A","B0542F"]));
+ z.file("xl/charts/chart3.xml",pieXml("Visits by library","Summary!$G$5:$G$13","Summary!$H$5:$H$13",LIBS,lv,LIBCOL));
+ var fn="attendance_"+rng.replace(/ /g,"")+".xlsx";
+ Promise.all([claude.use("downloads"),z.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})]).then(function(a){
+  if(!a[0]){alert("Download is not available here. Open the link in its own browser tab.");return}
+  return a[0].save({filename:fn,data:a[1]})}).catch(function(e){if(!e||e.code!=="declined")alert("Could not save the Excel file. Try again.")})};
+function speak(kind,name){if(!$("snd").checked||!window.speechSynthesis)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance((kind==="in"?"Welcome, ":"Goodbye, ")+name);u.rate=.95;speechSynthesis.speak(u)}catch(e){}}
+var LIBS=["Ghulam Qadir Kazi Central Male Library","Ghulam Qadir Kazi Central Female Library","A Block Male Library","A Block Female Library","B Block Male Library","B Block Female Library","Nursing Departmental Library","Hospital Library","Dental Departmental Library"];
+var LIBCOL=["0F4C3A","3FA37F","14785A","D4A63A","E8C36A","B0542F","3B6EA5","7B4FA0","C2569B"];
+function libVals(r){return LIBS.map(function(n){return r.filter(function(x){return x.lib===n}).length})}
+function items3(r){var v=libVals(r);return LIBS.map(function(n,i){return{l:n,v:v[i],c:"#"+LIBCOL[i]}})}
+function sumRows(p,lv){var s='<row r="4">'+xc("A4","Group",1)+xc("B4","Records",1)+xc("D4","Action",1)+xc("E4","Records",1)+xc("G4","Library",1)+xc("H4","Records",1)+'</row>';
+ for(var i=0;i<LIBS.length;i++){var n=5+i,c=[];if(i<2)c.push(xc("A"+n,p[0][i].l),xc("B"+n,p[0][i].v),xc("D"+n,p[1][i].l),xc("E"+n,p[1][i].v));c.push(xc("G"+n,LIBS[i]),xc("H"+n,lv[i]));s+='<row r="'+n+'">'+c.join("")+'</row>'}
+ return s}
+function fillLibs(){var o=LIBS.map(function(n){return'<option>'+n+'</option>'}).join("");$("lib").innerHTML=o;$("tlib").innerHTML='<option value="">All libraries</option>'+o;$("fl").innerHTML='<option value="">All libraries</option>'+o;
+ try{var s=localStorage.getItem("att_lib");if(s&&LIBS.indexOf(s)>=0)$("lib").value=s}catch(e){}}
+$("lib").onchange=function(){try{localStorage.setItem("att_lib",this.value)}catch(e){}$("msg").textContent="Library set to "+this.value+"."};
+$("tlib").onchange=function(){renderToday()};$("fl").onchange=function(){renderRep()};
+var td=dkey(new Date());$("f1").value=td;$("f2").value=td;
+load();fillWho();fillLibs();
+var first=true;
+if(window.claude&&claude.use){claude.use("db").then(function(d){if(!d)return;var local=P.slice(),localL=L.slice();DB=d;$("store").textContent="Saved online";
+ d.collection("people").onSnapshot(function(s){if(first&&!s.metadata.fromCache){first=false;if(s.empty){local.forEach(dbPut);localL.forEach(dbLog)}}P=s.docs.map(function(x){return x.data()});fillWho();refresh()},function(){$("store").textContent="Online storage unavailable, saved on this device only";DB=null});
+ d.collection("logs").onSnapshot(function(s){L=s.docs.map(function(x){return x.data()});refresh()},function(){})
+}).catch(function(){})}
+})();
+</script>
+</body>
+</html>
